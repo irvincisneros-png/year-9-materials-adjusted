@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3.1.3 First Nations Uses of Resources · Year 9 Materials</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1F2233; --muted:#6B6F86;
+    --purple:#EA7317; --purple-deep:#C2570C; --purple-soft:#FCE6D2;
+    --grad-a:#FB923C; --grad-b:#C2570C;
+    --red:#E8443B; --blue:#1E9FE0; --green:#21C36B; --yellow:#F4B81E; --orange:#F08A24;
+    --card:#FFFFFF; --line:#F2D9C2; --panel:#FEF8F2;
+    --bg:#FBEAD9;
+    --shadow:0 22px 54px -22px rgba(60,40,110,.5);
+    --shadow-sm:0 10px 24px -12px rgba(60,40,110,.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;font-family:"Lexend",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:#0b0b12;overflow:hidden}
+  /* viewport letterboxes a fixed 1280x720 canvas, scaled to fit (PowerPoint-style) */
+  .viewport{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden;
+    background:radial-gradient(1400px 820px at 70% -12%, #EFF4FE 0%, var(--bg) 52%, #D6E3F7 100%)}
+  .canvas{width:1280px;height:720px;position:relative;transform-origin:center center;overflow:hidden;color:var(--ink)}
+
+  /* ---------- top bar (Variant B) ---------- */
+  .bar{position:absolute;top:0;left:0;right:0;height:74px;display:flex;align-items:center;gap:16px;
+    padding:0 44px;z-index:20}
+  .pbadge{width:40px;height:40px;border-radius:12px;background:linear-gradient(150deg,var(--grad-a),var(--grad-b));
+    display:grid;place-items:center;color:#fff;font-weight:900;font-size:21px;box-shadow:var(--shadow-sm)}
+  .bar .ttl{font-weight:800;font-size:20px;color:var(--ink)}
+  .bar .ttl span{color:var(--muted);font-weight:700}
+  .bar .right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .bar .count{font-weight:700;color:var(--muted);font-size:16px;letter-spacing:.04em}
+  .seg{display:flex;gap:4px}
+  .seg i{width:18px;height:6px;border-radius:4px;background:var(--line);transition:background .3s}
+  .seg i.on{background:var(--purple)}
+
+  /* ---------- slide stage ---------- */
+  .deck{position:absolute;top:74px;left:0;right:0;bottom:0}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+    padding:26px 72px 40px;opacity:0;visibility:hidden;transform:translateY(12px);
+    transition:opacity .4s ease,transform .4s ease}
+  .slide.active{opacity:1;visibility:visible;transform:none}
+  h1.title{font-size:92px;line-height:1.02;font-weight:900;letter-spacing:-.02em}
+  h2{font-size:54px;font-weight:900;letter-spacing:-.015em;line-height:1.05}
+  .eyebrow{color:var(--purple);font-weight:800;letter-spacing:.14em;font-size:17px;margin-bottom:12px}
+  .lead{font-size:27px;color:#33364a;line-height:1.45}
+  .muted{color:var(--muted)} .center{text-align:center}
+  .frag{opacity:0;transform:translateY(7px);transition:opacity .32s ease,transform .32s ease}
+  .frag.show{opacity:1;transform:none}
+
+  .card{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:40px}
+  .subcard{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:26px}
+  .pill{display:inline-flex;align-items:center;gap:9px;padding:10px 24px;border-radius:999px;color:#fff;
+    font-weight:800;letter-spacing:.05em;font-size:22px;box-shadow:var(--shadow-sm)}
+  .bullet{display:flex;gap:14px;align-items:flex-start;font-size:25px;line-height:1.4;margin:18px 0;color:#33364a}
+  .bullet .b{flex:0 0 auto;width:18px;height:18px;border-radius:50%;margin-top:7px}
+  .bullet b{color:var(--ink);font-weight:800}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:stretch}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+  .btn{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:800;color:#fff;
+    background:linear-gradient(150deg,var(--grad-a),var(--grad-b));padding:18px 40px;border-radius:999px;font-size:22px;
+    box-shadow:var(--shadow-sm);letter-spacing:.04em;transition:transform .15s,filter .15s}
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  .fchip{display:inline-flex;align-items:center;gap:.3em;background:var(--purple-soft);color:var(--purple-deep);
+    font-weight:900;padding:.3em .65em;border-radius:14px}
+
+  /* calculator / sim */
+  .calc{display:grid;grid-template-columns:1.04fr .96fr;gap:34px;align-items:center}
+  .readout{font-size:58px;font-weight:900;letter-spacing:-.02em;line-height:1.05}
+  .readout .u{color:var(--purple);font-size:.55em}
+  .slabel{display:flex;justify-content:space-between;font-weight:700;color:var(--muted);font-size:20px;margin-bottom:10px}
+  input[type=range]{-webkit-appearance:none;width:100%;height:12px;border-radius:999px;
+    background:linear-gradient(90deg,var(--purple) 0 var(--p,50%),#E4DEF4 var(--p,50%) 100%);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;
+    background:#fff;border:5px solid var(--purple);box-shadow:var(--shadow-sm);cursor:pointer}
+  .eqline{font-weight:800;font-size:26px;color:#33364a;margin-top:8px}
+  .eqline b{color:var(--purple-deep)}
+  .planets{display:flex;gap:12px;flex-wrap:wrap}
+  .pchip{appearance:none;border:2px solid var(--line);background:#fff;cursor:pointer;font-family:inherit;
+    font-weight:800;color:var(--ink);padding:11px 18px;border-radius:16px;display:flex;align-items:center;gap:10px;
+    font-size:21px;transition:.15s}
+  .pchip .o{width:18px;height:18px;border-radius:50%}
+  .pchip[aria-pressed=true]{border-color:var(--purple);background:var(--purple-soft);transform:translateY(-2px)}
+
+  /* quiz */
+  .qopts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .qopt{appearance:none;border:none;cursor:pointer;font-family:inherit;text-align:left;background:#fff;
+    border-radius:18px;padding:18px 20px;display:flex;align-items:center;gap:15px;font-weight:700;font-size:24px;
+    box-shadow:var(--shadow-sm);transition:.15s;color:var(--ink)}
+  .qopt:hover{transform:translateY(-2px)}
+  .qopt .key{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;flex:0 0 auto}
+  .qopt[data-state=correct]{outline:3px solid var(--green);background:#EAFBF1}
+  .qopt[data-state=wrong]{outline:3px solid var(--red);background:#FDECEA;opacity:.85}
+  .qopt[disabled]{cursor:default}
+  .hearts{font-size:30px;letter-spacing:6px} .hearts .lost{opacity:.22;filter:grayscale(1)}
+  .qfb{min-height:34px;font-weight:700;font-size:23px}
+  .qmark{width:116px;height:116px;border-radius:26px;background:linear-gradient(150deg,#F8C73B,#F0A91E);
+    display:grid;place-items:center;color:#fff;font-size:70px;font-weight:900;box-shadow:var(--shadow);margin:0 auto 16px}
+  .stars{font-size:84px;letter-spacing:16px;color:var(--yellow)}
+  .stars span{display:inline-block;transform:scale(0);animation:pop .5s cubic-bezier(.2,1.4,.4,1) forwards}
+  @keyframes pop{to{transform:scale(1)}}
+  .review-gate{max-width:880px;margin:0 auto;padding:34px 42px;border:2px solid var(--orange);border-radius:18px;
+    background:#fff;box-shadow:var(--shadow)}
+  .review-gate h3{margin:0 0 18px;font-size:29px;color:var(--ink)}
+  .review-gate ul{margin:0;padding-left:28px;font-size:22px;line-height:1.55;color:var(--ink)}
+  .review-gate p{margin:20px 0 0;font-size:20px;font-weight:700;color:var(--orange)}
+
+  /* ---------- bottom navigator (hover up) ---------- */
+  .prog{position:absolute;left:0;bottom:0;height:6px;background:var(--purple);width:0;transition:width .4s ease;z-index:14}
+  .navhint{position:absolute;left:50%;bottom:9px;transform:translateX(-50%);color:var(--muted);
+    font-size:14px;font-weight:600;opacity:.55;z-index:15;transition:opacity .25s}
+  .navpane{position:absolute;left:0;right:0;bottom:0;display:flex;gap:9px;justify-content:center;align-items:center;
+    flex-wrap:wrap;padding:18px 16px;background:linear-gradient(0deg,rgba(255,255,255,.95),rgba(255,255,255,.6) 70%,rgba(255,255,255,0));
+    transform:translateY(101%);transition:transform .28s ease;z-index:25}
+  .canvas.shownav .navpane{transform:none}
+  .canvas.shownav .navhint{opacity:0}
+  .thumb{min-width:62px;height:40px;padding:0 8px;border-radius:9px;background:#fff;border:2px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+  .thumb .n{font-size:13px;font-weight:800;color:var(--muted);line-height:1}
+  .thumb .l{font-size:9px;font-weight:600;color:var(--muted);margin-top:2px;letter-spacing:.02em}
+  .thumb:hover{transform:translateY(-2px);border-color:var(--purple)}
+  .thumb.cur{border-color:var(--purple);background:var(--purple-soft)}
+  .thumb.cur .n,.thumb.cur .l{color:var(--purple-deep)}
+</style>
+</head>
+<body>
+<div class="viewport">
+  <div class="canvas" id="canvas">
+
+    <div class="bar">
+      <div class="pbadge">E</div>
+      <div class="ttl">Earth Science · Materials&nbsp;&nbsp;<span>/ First Nations Uses of Resources</span></div>
+      <div class="right">
+        <div class="count"><span id="cur">1</span> / <span id="tot">0</span></div>
+        <div class="seg" id="seg"></div>
+      </div>
+    </div>
+
+    <div class="deck" id="deck">
+<!-- AECG REVIEW PENDING: First Nations content — HOLD from classroom use until AECG sign-off. Built with no AI/figurative ATSI imagery (non-figurative material visuals only) and no invented cultural detail. -->
+
+<!-- SLIDE 1: title -->
+<section class="slide" data-tag="HOME">
+  <div class="card center" style="max-width:860px;margin:auto">
+    <div class="eyebrow">YEAR 9 · MATERIALS</div>
+    <h1 class="title">First Nations</h1>
+    <p class="lead muted" style="margin:18px 0 30px">Materials and properties: local review</p>
+    <button class="btn" onclick="next()">▶&nbsp; Start Lesson</button>
+  </div>
+</section>
+
+<!-- SLIDE 2: li_sc -->
+<section class="slide" data-tag="GOALS">
+  <div class="card" style="max-width:1040px;margin:auto;width:100%">
+    <div class="eyebrow">🎯 LEARNING INTENTION</div>
+    <p class="lead" style="font-weight:600;margin-bottom:24px">We are learning to investigate material properties using locally approved, place-specific sources.</p>
+    <div class="eyebrow">✓ SUCCESS CRITERIA</div>
+    <div class="bullet frag"><span class="b" style="background:var(--green)"></span><span>I can describe iron oxide mineral properties.</span></div>
+    <div class="bullet frag"><span class="b" style="background:var(--blue)"></span><span>I can explain why some rocks can form sharp edges.</span></div>
+    <div class="bullet frag"><span class="b" style="background:var(--yellow)"></span><span>I can compare material properties using approved local evidence.</span></div>
+    <div class="bullet frag"><span class="b" style="background:var(--red)"></span><span>I can explain why local guidance matters.</span></div>
+  </div>
+</section>
+
+<!-- SLIDE 3: rwl — non-figurative source-review motif -->
+<section class="slide" data-tag="REAL WORLD">
+  <div class="card" style="max-width:1120px;margin:auto;width:100%">
+    <div class="grid2" style="align-items:center;gap:40px">
+      <div>
+        <div class="eyebrow">🌍 REAL WORLD LINK</div>
+        <h2>Materials Knowledge Requires Local Review</h2>
+        <p class="lead muted" style="margin-top:10px;font-weight:600">Diverse, continuing knowledge of materials</p>
+        <p class="lead" style="margin-top:16px">Use locally approved, place-specific sources.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+        <!-- Non-figurative: local-review scale motif -->
+        <svg viewBox="0 0 360 180" style="width:100%;max-width:340px">
+          <rect x="10" y="84" width="340" height="8" rx="4" fill="#F2D9C2"/>
+          <rect x="10" y="84" width="340" height="8" rx="4" fill="url(#tl)"/>
+          <defs>
+            <linearGradient id="tl" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#C2570C" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#C2570C"/>
+            </linearGradient>
+          </defs>
+          <!-- left anchor -->
+          <circle cx="10" cy="88" r="10" fill="#FCE6D2" stroke="#C2570C" stroke-width="2.5"/>
+          <text x="10" y="93" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="800" fill="#C2570C">?</text>
+          <text x="10" y="116" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">Review</text>
+          <!-- midpoint nodes -->
+          <circle cx="120" cy="88" r="7" fill="#FCE6D2" stroke="#EA7317" stroke-width="2"/>
+          <circle cx="230" cy="88" r="7" fill="#FCE6D2" stroke="#EA7317" stroke-width="2"/>
+          <!-- right anchor = today -->
+          <circle cx="350" cy="88" r="10" fill="#EA7317"/>
+          <text x="350" y="93" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" font-weight="800" fill="#fff">Now</text>
+          <!-- label -->
+          <text x="180" y="50" text-anchor="middle" font-family="Lexend,sans-serif" font-size="16" font-weight="900" fill="#C2570C">Approved sources</text>
+          <text x="180" y="68" text-anchor="middle" font-family="Lexend,sans-serif" font-size="12" fill="#6B6F86">place-specific material evidence</text>
+          <!-- bracket -->
+          <line x1="10" y1="148" x2="350" y2="148" stroke="#EA7317" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="180" y="165" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#EA7317">local guidance</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: content — Community-Specific Knowledge (single column, no figurative image) -->
+<section class="slide" data-tag="CONCEPT">
+  <div class="card" style="max-width:1080px;margin:auto;width:100%">
+    <div class="eyebrow">MATERIALS KNOWLEDGE</div>
+    <h2>Local knowledge</h2>
+    <div style="margin-top:22px">
+      <div class="bullet frag"><span class="b" style="background:var(--blue)"></span><span>Knowledge and practices are diverse and belong to particular communities.</span></div>
+      <div class="bullet frag"><span class="b" style="background:var(--green)"></span><span>Teach only examples supported by local, approved sources.</span></div>
+      <div class="bullet frag"><span class="b" style="background:var(--yellow)"></span><span>Material properties can be investigated without generalising practices.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: content_text_left — Ochre: A Mineral Pigment. Non-figurative: ochre colour-swatch panel -->
+<section class="slide" data-tag="OCHRE">
+  <div class="card" style="max-width:1120px;margin:auto;width:100%">
+    <div class="grid2" style="align-items:center;gap:40px">
+      <div>
+        <div class="eyebrow">MINERAL PIGMENTS</div>
+        <h2>Ochre pigment</h2>
+        <div style="margin-top:18px">
+          <div class="bullet frag"><span class="b" style="background:var(--red)"></span><span>Iron oxide mineral; colour varies.</span></div>
+          <div class="bullet frag"><span class="b" style="background:var(--orange)"></span><span>Preparation methods are place-specific.</span></div>
+          <div class="bullet frag"><span class="b" style="background:var(--purple)"></span><span>Use locally approved examples.</span></div>
+        </div>
+      </div>
+      <!-- Non-figurative: ochre mineral colour-swatch panel -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+        <svg viewBox="0 0 280 220" style="width:100%;max-width:260px">
+          <text x="140" y="22" text-anchor="middle" font-family="Lexend,sans-serif" font-size="13" font-weight="800" fill="#C2570C" letter-spacing="2">IRON OXIDE — Fe₂O₃</text>
+          <!-- Swatch 1: red ochre -->
+          <rect x="20" y="32" width="54" height="60" rx="12" fill="#B5442A"/>
+          <text x="47" y="106" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#6B6F86">Red</text>
+          <text x="47" y="119" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">Haematite</text>
+          <!-- Swatch 2: yellow ochre -->
+          <rect x="86" y="32" width="54" height="60" rx="12" fill="#C89B2A"/>
+          <text x="113" y="106" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#6B6F86">Yellow</text>
+          <text x="113" y="119" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">Goethite</text>
+          <!-- Swatch 3: brown ochre -->
+          <rect x="152" y="32" width="54" height="60" rx="12" fill="#7A4E2D"/>
+          <text x="179" y="106" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#6B6F86">Brown</text>
+          <text x="179" y="119" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">Limonite</text>
+          <!-- Swatch 4: white ochre -->
+          <rect x="218" y="32" width="54" height="60" rx="12" fill="#E8DFD0" stroke="#D4C4B0" stroke-width="1.5"/>
+          <text x="245" y="106" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#6B6F86">White</text>
+          <text x="245" y="119" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">Kaolin</text>
+          <!-- Process arrow -->
+          <text x="140" y="148" text-anchor="middle" font-family="Lexend,sans-serif" font-size="12" font-weight="700" fill="#EA7317">MATERIAL PROPERTIES</text>
+          <line x1="40" y1="158" x2="240" y2="158" stroke="#EA7317" stroke-width="2"/>
+          <polygon points="240,153 252,158 240,163" fill="#EA7317"/>
+          <text x="140" y="178" text-anchor="middle" font-family="Lexend,sans-serif" font-size="12" font-weight="700" fill="#C2570C">LOCAL REVIEW REQUIRED</text>
+          <text x="140" y="196" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" fill="#6B6F86">use approved, place-specific sources</text>
+          <text x="140" y="212" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" fill="#6B6F86">→ compare material properties</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: content — material evidence (single column) -->
+<section class="slide" data-tag="EVIDENCE">
+  <div class="card" style="max-width:1080px;margin:auto;width:100%">
+    <div class="eyebrow">SOURCE REVIEW</div>
+    <h2>Material evidence</h2>
+    <div style="margin-top:22px">
+      <div class="bullet frag"><span class="b" style="background:var(--red)"></span><span>Use teacher-approved, place-specific evidence.</span></div>
+      <div class="bullet frag"><span class="b" style="background:var(--blue)"></span><span>Compare colour, texture and mineral properties.</span></div>
+      <div class="bullet frag"><span class="b" style="background:var(--green)"></span><span>Do not generalise practices across communities.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 7: content_graphic_left — Stone Tools. Non-figurative: knapped stone edge geometry diagram -->
+<section class="slide" data-tag="STONE">
+  <div class="card" style="max-width:1120px;margin:auto;width:100%">
+    <div class="grid2" style="align-items:center;gap:40px">
+      <!-- graphic left -->
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <svg viewBox="0 0 280 240" style="width:100%;max-width:260px">
+          <text x="140" y="20" text-anchor="middle" font-family="Lexend,sans-serif" font-size="13" font-weight="800" fill="#C2570C" letter-spacing="1">KNAPPED EDGE — CROSS SECTION</text>
+          <!-- stone body -->
+          <polygon points="60,200 140,60 220,200" fill="#C8BEB0" stroke="#8A7F74" stroke-width="2"/>
+          <!-- flake scars — concentric arcs suggesting knapping -->
+          <path d="M 100,190 Q 120,140 140,60" stroke="#8A7F74" stroke-width="1.2" fill="none" stroke-dasharray="4 3"/>
+          <path d="M 110,195 Q 128,152 140,60" stroke="#8A7F74" stroke-width="1" fill="none" stroke-dasharray="3 3"/>
+          <path d="M 120,198 Q 134,162 140,60" stroke="#7A7068" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+          <path d="M 160,195 Q 148,152 140,60" stroke="#8A7F74" stroke-width="1" fill="none" stroke-dasharray="3 3"/>
+          <path d="M 172,190 Q 154,140 140,60" stroke="#8A7F74" stroke-width="1.2" fill="none" stroke-dasharray="4 3"/>
+          <!-- sharp apex highlight -->
+          <circle cx="140" cy="60" r="5" fill="#EA7317"/>
+          <line x1="140" y1="60" x2="140" y2="30" stroke="#EA7317" stroke-width="1.5"/>
+          <text x="140" y="24" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="800" fill="#EA7317">sharp edge</text>
+          <!-- label left -->
+          <text x="56" y="215" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">flake</text>
+          <text x="56" y="227" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">scars</text>
+          <!-- label right -->
+          <text x="224" y="215" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">fine</text>
+          <text x="224" y="227" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">grain</text>
+          <!-- grain texture dots -->
+          <circle cx="130" cy="140" r="2" fill="#8A7F74" opacity="0.5"/>
+          <circle cx="148" cy="130" r="2" fill="#8A7F74" opacity="0.5"/>
+          <circle cx="140" cy="155" r="2" fill="#8A7F74" opacity="0.5"/>
+          <circle cx="155" cy="148" r="2" fill="#8A7F74" opacity="0.5"/>
+          <circle cx="124" cy="160" r="2" fill="#8A7F74" opacity="0.5"/>
+          <circle cx="158" cy="165" r="2" fill="#8A7F74" opacity="0.4"/>
+          <circle cx="136" cy="170" r="2" fill="#8A7F74" opacity="0.4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="eyebrow">STONE TOOLS</div>
+        <h2>Toolstone properties</h2>
+        <div style="margin-top:18px">
+          <div class="bullet frag"><span class="b" style="background:var(--blue)"></span><span>Rock properties vary by material type.</span></div>
+          <div class="bullet frag"><span class="b" style="background:var(--green)"></span><span>Fine-grained rocks can form sharp edges when knapped.</span></div>
+          <div class="bullet frag"><span class="b" style="background:var(--yellow)"></span><span>Use teacher-approved, place-specific examples.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8: comparison -->
+<section class="slide" data-tag="COMPARE">
+  <div style="max-width:1140px;margin:auto;width:100%">
+    <h2 style="margin:0 4px 22px">Ochre vs Stone Tools</h2>
+    <div class="grid2">
+      <div class="card frag"><span class="pill" style="background:var(--red)">Ochre</span>
+        <div class="bullet" style="margin-top:18px"><span class="b" style="background:var(--red)"></span><span>Iron oxide mineral</span></div>
+        <div class="bullet"><span class="b" style="background:var(--red)"></span><span>Compare colour and mineral properties.</span></div>
+        <div class="bullet"><span class="b" style="background:var(--red)"></span><span>Uses require local approval</span></div>
+      </div>
+      <div class="card frag"><span class="pill" style="background:var(--blue)">Stone Tools</span>
+        <div class="bullet" style="margin-top:18px"><span class="b" style="background:var(--blue)"></span><span>Rock properties vary by material type.</span></div>
+        <div class="bullet"><span class="b" style="background:var(--blue)"></span><span>Fine-grained rocks can form sharp edges.</span></div>
+        <div class="bullet"><span class="b" style="background:var(--blue)"></span><span>Use locally approved examples.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9: content — Clay and Shell. Non-figurative material samples -->
+<section class="slide" data-tag="CLAY">
+  <div class="card" style="max-width:1120px;margin:auto;width:100%">
+    <div class="grid2" style="align-items:center;gap:40px">
+      <div>
+        <div class="eyebrow">MORE MATERIALS</div>
+        <h2>Clay and shell: material properties</h2>
+        <div style="margin-top:18px">
+          <div class="bullet frag"><span class="b" style="background:var(--yellow)"></span><span>Compare texture and water resistance using approved evidence.</span></div>
+          <div class="bullet frag"><span class="b" style="background:var(--green)"></span><span>Use local guidance for cultural applications.</span></div>
+          <div class="bullet frag"><span class="b" style="background:var(--blue)"></span><span>Do not generalise practices across communities.</span></div>
+        </div>
+      </div>
+      <!-- Non-figurative: plain object icons -->
+      <div style="display:flex;gap:24px;align-items:center;justify-content:center">
+        <svg viewBox="0 0 240 200" style="width:100%;max-width:230px">
+          <!-- Clay vessel icon -->
+          <ellipse cx="70" cy="80" rx="36" ry="14" fill="#C89B2A" opacity="0.4"/>
+          <path d="M 34,80 Q 28,130 70,145 Q 112,130 106,80 Z" fill="#C89B2A" stroke="#A07820" stroke-width="1.5"/>
+          <ellipse cx="70" cy="145" rx="20" ry="7" fill="#A07820" opacity="0.5"/>
+          <text x="70" y="172" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#6B6F86">Clay sample</text>
+          <text x="70" y="185" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">texture</text>
+          <!-- Shell icon -->
+          <path d="M 170,50 Q 210,50 210,90 Q 210,130 170,130 Q 150,120 148,90 Q 148,60 170,50 Z" fill="#E8DFD0" stroke="#C4B8A8" stroke-width="1.5"/>
+          <!-- shell ridges -->
+          <path d="M 170,50 Q 168,90 168,130" stroke="#C4B8A8" stroke-width="1" fill="none"/>
+          <path d="M 182,52 Q 184,90 182,128" stroke="#C4B8A8" stroke-width="1" fill="none"/>
+          <path d="M 194,58 Q 198,90 194,124" stroke="#C4B8A8" stroke-width="0.8" fill="none"/>
+          <path d="M 204,68 Q 208,90 204,114" stroke="#C4B8A8" stroke-width="0.8" fill="none"/>
+          <!-- hinge -->
+          <ellipse cx="158" cy="90" rx="8" ry="14" fill="#D4C8B8" stroke="#C4B8A8" stroke-width="1"/>
+          <text x="178" y="152" text-anchor="middle" font-family="Lexend,sans-serif" font-size="11" font-weight="700" fill="#6B6F86">Shell sample</text>
+          <text x="178" y="165" text-anchor="middle" font-family="Lexend,sans-serif" font-size="10" fill="#6B6F86">surface pattern</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 10: source-review gate -->
+<section class="slide" data-tag="REVIEW">
+  <div style="max-width:1000px;margin:auto;width:100%">
+    <div class="eyebrow" style="margin-bottom:6px">SOURCE REVIEW</div>
+    <h2 style="font-size:38px;margin-bottom:18px">Teacher-led local review <span class="muted" style="font-weight:700">· cultural authority review</span></h2>
+    <div class="review-gate">
+      <h3>Before classroom use</h3>
+      <ul>
+        <li>Seek local community / AECG guidance.</li>
+        <li>Use place-specific, community-approved sources.</li>
+        <li>Check cultural authority and classroom suitability.</li>
+      </ul>
+      <p>If approval is not confirmed, use a neutral material-properties comparison.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 11: checkpoint -->
+<section class="slide" data-tag="CHECKPOINT">
+  <div style="max-width:1120px;margin:auto;width:100%">
+    <div class="grid2" style="align-items:center;gap:34px">
+      <div class="card center">
+        <div class="qmark" id="qIcon">?</div>
+        <div class="eyebrow" style="margin-bottom:8px">LIVES</div>
+        <div class="hearts" id="hearts">♥ ♥ ♥</div>
+        <p class="lead" id="qPrompt" style="font-weight:700;margin-top:18px"></p>
+      </div>
+      <div><div class="qopts" id="qopts"></div><p class="qfb" id="qfb" style="margin-top:18px"></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 12: summary -->
+<section class="slide" data-tag="RECAP">
+  <div style="max-width:1140px;margin:auto;width:100%">
+    <h2 style="margin:0 4px 24px">Material properties to investigate</h2>
+    <div class="grid3">
+      <div class="subcard frag"><div class="fchip" style="font-size:24px">Ochre</div>
+        <p class="lead" style="font-size:22px;margin-top:14px">Iron oxide mineral; colour varies. Use locally approved examples.</p></div>
+      <div class="subcard frag"><div class="fchip" style="font-size:24px">Stone tools</div>
+        <p class="lead" style="font-size:22px;margin-top:14px">Fine-grained rocks can form sharp edges when worked.</p></div>
+      <div class="subcard frag"><div class="fchip" style="font-size:24px">Clay and shell</div>
+        <p class="lead" style="font-size:22px;margin-top:14px">Compare texture, hardness and water resistance with local approval.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 13: closing -->
+<section class="slide" data-tag="COMPLETE">
+  <div class="card center" style="max-width:760px;margin:auto">
+    <div class="stars" id="stars">★ ★ ★</div>
+    <h2 style="margin:16px 0 10px">Lesson Complete</h2>
+    <p class="lead" style="margin-top:6px"><b>Knowledge That Endures</b></p>
+    <p class="lead muted" style="margin-top:14px">Next: Properties and uses of other materials</p>
+  </div>
+</section>
+
+    </div>
+
+    <div class="prog" id="progress"></div>
+    <div class="navhint">▴ hover for slide navigator · ← → keys · F fullscreen</div>
+    <div class="navpane" id="navpane"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const canvas=document.getElementById('canvas');
+  function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);canvas.style.transform=`scale(${s})`;}
+  addEventListener('resize',fit);fit();
+
+  const slides=[...document.querySelectorAll('.slide')];
+  const tagsShort=["HOME","GOALS","REAL WORLD","CONCEPT","OCHRE","EVIDENCE","STONE","COMPARE","CLAY","REVIEW","CHECKPOINT","RECAP","COMPLETE"];
+  const cur=document.getElementById('cur'); document.getElementById('tot').textContent=slides.length;
+  let i=0, step=0;
+  // segments + nav thumbnails
+  document.getElementById('seg').innerHTML=slides.map(()=>'<i></i>').join('');
+  const segs=[...document.querySelectorAll('#seg i')];
+  document.getElementById('navpane').innerHTML=slides.map((s,n)=>
+    `<div class="thumb" data-n="${n}"><span class="n">${n+1}</span><span class="l">${tagsShort[n]||''}</span></div>`).join('');
+  const thumbs=[...document.querySelectorAll('.thumb')];
+  thumbs.forEach(t=>t.addEventListener('click',()=>jump(+t.dataset.n)));
+
+  function frags(s){return [...s.querySelectorAll('.frag')];}
+  function render(){
+    slides.forEach((s,n)=>s.classList.toggle('active',n===i));
+    frags(slides[i]).forEach((f,n)=>f.classList.toggle('show',n<step));
+    cur.textContent=i+1;
+    segs.forEach((g,n)=>g.classList.toggle('on',n<=i));
+    thumbs.forEach((t,n)=>t.classList.toggle('cur',n===i));
+    document.getElementById('progress').style.width=(i/(slides.length-1)*100)+'%';
+    if(slides[i].dataset.tag==='COMPLETE') popStars();
+  }
+  window.next=function(){const f=frags(slides[i]);if(step<f.length){step++;render();return;}if(i<slides.length-1){i++;step=0;render();}};
+  window.prev=function(){if(step>0){step--;render();return;}if(i>0){i--;step=frags(slides[i]).length;render();}};
+  function jump(n){i=Math.max(0,Math.min(slides.length-1,n));step=frags(slides[i]).length;render();canvas.classList.remove('shownav');}
+
+  // Keyboard nav — also drives presentation remotes (clickers emit PageDown/PageUp or arrows).
+  // No full-screen click zones: clicking only ever hits real controls (slider/quiz/etc), never advances.
+  addEventListener('keydown',e=>{
+    const t=(document.activeElement&&document.activeElement.tagName)||'';
+    const onControl=/^(BUTTON|INPUT|SELECT|TEXTAREA|A)$/.test(t); // don't hijack Space/Enter on a focused control
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key==='ArrowDown'||((e.key===' '||e.key==='Enter')&&!onControl)){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'||e.key==='ArrowUp'){e.preventDefault();prev();}
+    else if(e.key==='Home'){jump(0);} else if(e.key==='End'){jump(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen&&document.exitFullscreen();}}
+  });
+  addEventListener('mousemove',e=>{canvas.classList.toggle('shownav', e.clientY/innerHeight>0.85);});
+
+  let starsDone=false;
+  function popStars(){if(starsDone)return;starsDone=true;
+    const el=document.getElementById('stars'); if(!el)return;
+    el.innerHTML='★ ★ ★'.split(' ').map((s,k)=>`<span style="animation-delay:${k*.18}s">${s}</span>`).join(' ');}
+
+  /* ===== WIDGET JS (per-deck — define widget functions here and call their initialisers) ===== */
+  const QUIZ={q:"What property makes silcrete good for sharp tools?", opts:["It is very light and easy to carry","It is hard and fine-grained","It dissolves in water","It is bright in colour"], correct:1, fb:"Hard, fine-grained rocks like silcrete fracture cleanly when knapped, producing a sharp, durable edge."};
+  let qLives=3,qSolved=false;
+  function quizInit(){document.getElementById('qPrompt').textContent=QUIZ.q;
+    const cols=['var(--red)','var(--blue)','var(--green)','var(--yellow)'];
+    document.getElementById('qopts').innerHTML=QUIZ.opts.map((o,k)=>`<button class="qopt" data-c="${k===QUIZ.correct?1:0}" onclick="qAns(this)"><span class="key" style="background:${cols[k]}">${['A','B','C','D'][k]}</span>${o}</button>`).join('');
+    qHearts();}
+  window.qAns=function(b){if(qSolved||qLives<=0)return;const fb=document.getElementById('qfb'),ok=b.dataset.c==='1';
+    if(ok){qSolved=true;b.dataset.state='correct';const ic=document.getElementById('qIcon');ic.textContent='✓';ic.style.background='linear-gradient(150deg,#34d27a,#21c36b)';
+      fb.style.color='var(--green)';fb.innerHTML='Correct! '+QUIZ.fb;[...document.querySelectorAll('.qopt')].forEach(o=>o.disabled=true);}
+    else{b.dataset.state='wrong';b.disabled=true;qLives--;qHearts();fb.style.color='var(--red)';
+      if(qLives>0){fb.textContent='Not quite — try again!';}else{fb.innerHTML='Out of lives. '+QUIZ.fb;document.querySelector('.qopt[data-c="1"]').dataset.state='correct';}}};
+  function qHearts(){const h=document.getElementById('hearts');if(h)h.innerHTML=[0,1,2].map(k=>`<span class="${k<qLives?'':'lost'}">♥</span>`).join(' ');}
+  quizInit();
+  /* ===== END WIDGET JS ===== */
+
+  render();
+})();
+</script>
+</body>
+</html>
